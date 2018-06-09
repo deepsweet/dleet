@@ -1,0 +1,30 @@
+{
+  "name": "pew-pew-pew",
+  "version": "0.1.0-3",
+  "description": "",
+  "keywords": "",
+  "homepage": "https://github.com/deepsweet/pew-pew-pew",
+  "repository": "deepsweet/pew-pew-pew",
+  "author": "Kir Belevich <kir@belevi.ch> (https://twitter.com/deepsweet)",
+  "license": "MIT",
+  "files": [
+    "build/"
+  ],
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "makethen": "^0.2.2"
+  },
+  "devDependencies": {
+    "@deepsweet/eslint-config-node-ts": "^0.1.0",
+    "@deepsweet/start-preset-node-ts-lib": "^0.1.0-5",
+    "@types/node": "^10.3.1",
+    "typescript": "^2.9.1"
+  },
+  "eslintConfig": {
+    "extends": "@deepsweet/eslint-config-node-ts"
+  }
+}
