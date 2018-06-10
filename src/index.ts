@@ -38,9 +38,11 @@ const dleet = async (targetPath: string) => {
     try {
       await rm(targetPath)
     } catch (error) {
+      // "operation not permitted", make target writable and try again
       if (IS_WINDOWS && error.code === 'EPERM') {
         await pChmod(targetPath, CHMOD_RWRWRW)
         await tryToRm()
+      // target is busy or locked, wait and try again few times
       } else if (IS_WINDOWS && error.code === 'EBUSY') {
         if (ebusyTries === EBUSY_MAX_TRIES) {
           throw error
@@ -50,6 +52,7 @@ const dleet = async (targetPath: string) => {
 
         await pDelay(EBUSY_RETRY_DELAY)
         await tryToRm()
+      // ignore "no such file or directory", it's a good result too
       } else if (error.code !== 'ENOENT') {
         throw error
       }
