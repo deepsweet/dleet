@@ -33,6 +33,7 @@ const rm = async (targetPath: string) => {
 
 const dleet = async (targetPath: string) => {
   let ebusyTries = 1
+  let hasFixedMode = false
 
   const tryToRm = async () => {
     try {
@@ -40,6 +41,12 @@ const dleet = async (targetPath: string) => {
     } catch (error) {
       // "operation not permitted", make target writable and try again
       if (IS_WINDOWS && error.code === 'EPERM') {
+        if (hasFixedMode) {
+          throw error
+        }
+
+        hasFixedMode = true
+
         await pChmod(targetPath, CHMOD_RWRWRW)
         await tryToRm()
       // target is busy or locked, wait and try again few times
