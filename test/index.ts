@@ -1,13 +1,27 @@
-import test from 'tape'
+import test from 'tape-promise/tape'
+import { createFsFromVolume, Volume } from 'memfs'
+import { mock, unmock } from 'mocku'
 
-import dleet from '../src/'
+test('delete directory with all files', async (t) => {
+  const vol = Volume.fromJSON({
+    '/test/1.md': '',
+    '/test/foo/2.md': '',
+    '/test/foo/bar/3.md': ''
+  })
 
-test('export', (t) => {
-  t.equal(
-    typeof dleet,
-    'function',
-    'must be a function'
+  mock('../src/', {
+    fs: createFsFromVolume(vol)
+  })
+
+  const { default: dleet } = await import('../src/')
+
+  await dleet('/test/')
+
+  t.deepEqual(
+    vol.toJSON(),
+    {},
+    'should wipe everything'
   )
 
-  t.end()
+  unmock('../src/')
 })

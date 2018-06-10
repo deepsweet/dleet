@@ -4,8 +4,7 @@
     "noEmit": true,
     "pretty": true,
     "lib": ["esnext"],
-    "moduleResolution": "node",
-    "strict": true
+    "moduleResolution": "node"
   },
   "exclude": ["build/", "coverage/", "node_modules/"]
 }
