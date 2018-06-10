@@ -784,9 +784,19 @@
     chalk "^2.4.0"
     stack-utils "^1.0.1"
 
+"@types/node@*":
+  version "10.3.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.2.tgz#3840ec6c12556fdda6e0e6d036df853101d732a4"
+
 "@types/node@^10.3.1":
   version "10.3.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.1.tgz#51092fbacaed768a122a293814474fbf6e5e8b6d"
+
+"@types/tape@^4.2.32":
+  version "4.2.32"
+  resolved "https://registry.yarnpkg.com/@types/tape/-/tape-4.2.32.tgz#1188330d22c4e822648c344faa070277737982d9"
+  dependencies:
+    "@types/node" "*"
 
 abbrev@1:
   version "1.1.1"

@@ -12,7 +12,7 @@ const pLstat = makethen(lstat)
 const pReaddir = makethen(readdir)
 const pRmdir = makethen(rmdir)
 const pUnlink = makethen(unlink)
-const pDelay = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+const pDelay = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 const rm = async (targetPath: string) => {
   const stats = await pLstat(targetPath)
