@@ -11,7 +11,7 @@ const pUnlink = makethen(unlink)
 const CHMOD_RWRWRW = parseInt('666', 8)
 const IS_WINDOWS = process.platform === 'win32'
 
-const pewPewPew = async (targetPath: string) => {
+const dleet = async (targetPath: string) => {
   try {
     const stats = await pLstat(targetPath)
 
@@ -21,7 +21,7 @@ const pewPewPew = async (targetPath: string) => {
       await Promise.all(
         list
           .map((item) => join(targetPath, item))
-          .map(pewPewPew)
+          .map(dleet)
       )
       await pRmdir(targetPath)
     } else {
@@ -30,11 +30,11 @@ const pewPewPew = async (targetPath: string) => {
   } catch (error) {
     if (IS_WINDOWS && error.code === 'EPERM') {
       await pChmod(targetPath, CHMOD_RWRWRW)
-      await pewPewPew(targetPath)
+      await dleet(targetPath)
     } else if (error.code !== 'ENOENT') {
       throw error
     }
   }
 }
 
-export default pewPewPew
+export default dleet

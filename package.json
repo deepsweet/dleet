@@ -1,10 +1,10 @@
 {
-  "name": "pew-pew-pew",
-  "version": "0.1.0-3",
+  "name": "dleet",
+  "version": "0.1.0-0",
   "description": "",
   "keywords": "",
-  "homepage": "https://github.com/deepsweet/pew-pew-pew",
-  "repository": "deepsweet/pew-pew-pew",
+  "homepage": "https://github.com/deepsweet/dleet",
+  "repository": "deepsweet/dleet",
   "author": "Kir Belevich <kir@belevi.ch> (https://twitter.com/deepsweet)",
   "license": "MIT",
   "files": [

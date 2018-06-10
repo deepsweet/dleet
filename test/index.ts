@@ -1,12 +1,10 @@
-/* eslint-disable promise/always-return */
-/* eslint-disable promise/catch-or-return */
 import test from 'tape'
 
-import pewPewPew from '../src/'
+import dleet from '../src/'
 
 test('export', (t) => {
   t.equal(
-    typeof pewPewPew,
+    typeof dleet,
     'function',
     'must be a function'
   )
