@@ -29,4 +29,24 @@ test('delete directory with subdirectories, files and symlinks', async (t) => {
   unmock('../src/')
   vol.reset()
 })
+
+test('error: ENOENT', async (t) => {
+  const vol = Volume.fromJSON({})
+  const fs = createFsFromVolume(vol)
+
+  mock('../src/', { fs })
+
+  const { default: dleet } = await import('../src/')
+
+  await dleet('/test/2.md')
+
+  t.deepEqual(
+    vol.toJSON(),
+    {},
+    'should ignore it'
+  )
+
+  unmock('../src/')
+  vol.reset()
+})
 })
