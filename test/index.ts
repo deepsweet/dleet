@@ -27,4 +27,6 @@ test('delete directory with subdirectories, files and symlinks', async (t) => {
   )
 
   unmock('../src/')
+  vol.reset()
+})
 })
