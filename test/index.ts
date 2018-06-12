@@ -88,8 +88,8 @@ test('error: EPERM + win32 + fix + fixed', async (t) => {
   })
   const fs = createFsFromVolume(vol)
   const lstatStub = stub()
-    .onFirstCall().throws((path) => ({ path, code: 'EPERM' }))
-    .onSecondCall().callsFake(fs.lstat)
+    .onCall(0).throws((path) => ({ path, code: 'EPERM' }))
+    .onCall(1).callsFake(fs.lstat)
   const chmodStub = stub().callsArgWith(2, null)
 
   let hasFixedMode = false
@@ -111,8 +111,8 @@ test('error: EPERM + win32 + fix + fixed', async (t) => {
   await dleet('/test/1.md')
 
   t.true(
-    lstatStub.firstCall.calledWithMatch('/test/1.md'),
-    'should call lstat first time'
+    lstatStub.getCall(0).calledWithMatch('/test/1.md'),
+    'should try 1st time'
   )
 
   t.true(
@@ -121,8 +121,8 @@ test('error: EPERM + win32 + fix + fixed', async (t) => {
   )
 
   t.true(
-    lstatStub.secondCall.calledWithMatch('/test/1.md'),
-    'should call lstat second time'
+    lstatStub.getCall(1).calledWithMatch('/test/1.md'),
+    'should try 2nd time'
   )
 
   t.deepEqual(
@@ -145,9 +145,19 @@ test('error: EBUSY + win32 + 1 retry', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
+  const triesTimestamps = []
   const lstatStub = stub()
-    .onFirstCall().throws((path) => ({ path, code: 'EBUSY' }))
-    .onSecondCall().callsFake(fs.lstat)
+    .onCall(0).throws((path) => {
+      triesTimestamps.push(Date.now())
+
+      return { path, code: 'EBUSY' }
+    })
+    .onCall(1).callsFake((path, callback) => {
+      triesTimestamps.push(Date.now())
+
+      fs.lstat(path, callback)
+    })
+  const setTimeoutStub = stub().callsArg(0)
 
   let hasFixedMode = false
 
@@ -167,13 +177,18 @@ test('error: EBUSY + win32 + 1 retry', async (t) => {
   await dleet('/test/1.md')
 
   t.true(
-    lstatStub.firstCall.calledWithMatch('/test/1.md'),
-    'should call lstat 1st time'
+    lstatStub.getCall(0).calledWithMatch('/test/1.md'),
+    'should try 1st time'
   )
 
   t.true(
-    lstatStub.secondCall.calledWithMatch('/test/1.md'),
-    'should call lstat 2nd time'
+    triesTimestamps[1] - triesTimestamps[0] >= 100,
+    'should wait 100ms'
+  )
+
+  t.true(
+    lstatStub.getCall(1).calledWithMatch('/test/1.md'),
+    'should try 2nd time'
   )
 
   t.deepEqual(
@@ -196,10 +211,23 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
+  const triesTimestamps = []
   const lstatStub = stub()
-    .onFirstCall().throws((path) => ({ path, code: 'EBUSY' }))
-    .onSecondCall().throws((path) => ({ path, code: 'EBUSY' }))
-    .onThirdCall().callsFake(fs.lstat)
+    .onCall(0).throws((path) => {
+      triesTimestamps.push(Date.now())
+
+      return { path, code: 'EBUSY' }
+    })
+    .onCall(1).throws((path) => {
+      triesTimestamps.push(Date.now())
+
+      return { path, code: 'EBUSY' }
+    })
+    .onCall(2).callsFake((path, callback) => {
+      triesTimestamps.push(Date.now())
+
+      fs.lstat(path, callback)
+    })
 
   let hasFixedMode = false
 
@@ -219,18 +247,28 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
   await dleet('/test/1.md')
 
   t.true(
-    lstatStub.firstCall.calledWithMatch('/test/1.md'),
-    'should call lstat 1st time'
+    lstatStub.getCall(0).calledWithMatch('/test/1.md'),
+    'should try 1st time'
   )
 
   t.true(
-    lstatStub.secondCall.calledWithMatch('/test/1.md'),
-    'should call lstat 2nd time'
+    triesTimestamps[1] - triesTimestamps[0] >= 100,
+    'should wait 100ms'
   )
 
   t.true(
-    lstatStub.thirdCall.calledWithMatch('/test/1.md'),
-    'should call lstat 3rd time'
+    lstatStub.getCall(1).calledWithMatch('/test/1.md'),
+    'should try 2nd time'
+  )
+
+  t.true(
+    triesTimestamps[2] - triesTimestamps[1] >= 100,
+    'should wait 100ms'
+  )
+
+  t.true(
+    lstatStub.getCall(2).calledWithMatch('/test/1.md'),
+    'should try 3rd time'
   )
 
   t.deepEqual(
@@ -273,19 +311,10 @@ test('error: EBUSY + win32 + 3 retries', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.true(
-      lstatStub.firstCall.calledWithMatch('/test/1.md'),
-      'should call lstat 1st time'
-    )
-
-    t.true(
-      lstatStub.secondCall.calledWithMatch('/test/1.md'),
-      'should call lstat 2nd time'
-    )
-
-    t.true(
-      lstatStub.thirdCall.calledWithMatch('/test/1.md'),
-      'should call lstat 3rd time'
+    t.equal(
+      lstatStub.callCount,
+      3,
+      'should try 3 times'
     )
 
     t.equal(
@@ -324,7 +353,7 @@ test('error: EBUSY + not win32', async (t) => {
   } catch (error) {
     t.true(
       lstatStub.calledOnce,
-      'should call lstat once'
+      'should try once'
     )
 
     t.equal(
@@ -364,7 +393,7 @@ test('error: EPERM + win32 + fix + not fixed', async (t) => {
   } catch (error) {
     t.true(
       lstatStub.calledTwice,
-      'should call lstat two times'
+      'should try 2 times'
     )
 
     t.equal(
@@ -403,7 +432,7 @@ test('error: EPERM + not win32', async (t) => {
   } catch (error) {
     t.true(
       lstatStub.calledOnce,
-      'should call lstat once'
+      'should try once'
     )
 
     t.equal(
@@ -439,7 +468,7 @@ test('error: any other + win32', async (t) => {
   } catch (error) {
     t.true(
       lstatStub.calledOnce,
-      'should call lstat once'
+      'should try once'
     )
 
     t.equal(
@@ -479,7 +508,7 @@ test('error: any other + not win32', async (t) => {
   } catch (error) {
     t.true(
       lstatStub.calledOnce,
-      'should call lstat once'
+      'should try once'
     )
 
     t.equal(
