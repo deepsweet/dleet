@@ -1,8 +1,8 @@
 {
   "name": "dleet",
-  "version": "0.1.0-1",
-  "description": "",
-  "keywords": "",
+  "version": "0.1.1",
+  "description": "Delete directories and files",
+  "keywords": "remove, delete, rmrf",
   "homepage": "https://github.com/deepsweet/dleet",
   "repository": "deepsweet/dleet",
   "author": "Kir Belevich <kir@belevi.ch> (https://twitter.com/deepsweet)",
