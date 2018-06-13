@@ -28,7 +28,7 @@ $ yarn add dleet
 ### Signature
 
 ```ts
-dleet(path: string) => Promise<void>
+(path: string) => Promise<void>
 ```
 
 ### Example
