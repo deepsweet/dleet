@@ -11,3 +11,32 @@ Delete directories and files. Yet another one of many similar to `rm -rf` packag
 * Windows errors handling:
   * an attempt to fix `EPERM` and retry
   * an attempt to wait and retry few times on `EBUSY`
+
+## Requirements
+
+* Node.js >= 6
+* [`esm` loader](https://github.com/standard-things/esm)
+
+## Install
+
+```sh
+$ yarn add dleet
+```
+
+## Usage
+
+### Signature
+
+```ts
+dleet(path: string) => Promise<void>
+```
+
+### Example
+
+```js
+import dleet from 'dleet'
+
+dleet('/file/or/directory/path')
+  .then(() => console.log('done'))
+  .catch(console.error)
+```
