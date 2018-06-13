@@ -1,6 +1,7 @@
 import { chmod, lstat, readdir, rmdir, unlink } from 'fs'
 import { join } from 'path'
 import makethen from 'makethen'
+import delay from 'delay'
 
 const EBUSY_MAX_TRIES = 3
 const EBUSY_RETRY_DELAY = 100
@@ -12,7 +13,6 @@ const pLstat = makethen(lstat)
 const pReaddir = makethen(readdir)
 const pRmdir = makethen(rmdir)
 const pUnlink = makethen(unlink)
-const pDelay = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 const rm = async (targetPath: string) => {
   const stats = await pLstat(targetPath)
@@ -57,7 +57,7 @@ const dleet = async (targetPath: string) => {
 
         ebusyTries += 1
 
-        await pDelay(EBUSY_RETRY_DELAY)
+        await delay(EBUSY_RETRY_DELAY)
         await tryToRm()
       // ignore "no such file or directory", it's a good result too
       } else if (error.code !== 'ENOENT') {

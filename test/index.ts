@@ -145,26 +145,19 @@ test('error: EBUSY + win32 + 1 retry', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const triesTimestamps = []
   const lstatStub = stub()
-    .onCall(0).throws((path) => {
-      triesTimestamps.push(Date.now())
-
-      return { path, code: 'EBUSY' }
-    })
-    .onCall(1).callsFake((path, callback) => {
-      triesTimestamps.push(Date.now())
-
-      fs.lstat(path, callback)
-    })
-  const setTimeoutStub = stub().callsArg(0)
-
+    .onCall(0).throws((path) => ({ path, code: 'EBUSY' }))
+    .onCall(1).callsFake(fs.lstat)
+  const delayStub = stub().resolves()
   let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
       lstat: lstatStub
+    },
+    delay: {
+      default: delayStub
     }
   })
 
@@ -182,7 +175,7 @@ test('error: EBUSY + win32 + 1 retry', async (t) => {
   )
 
   t.true(
-    triesTimestamps[1] - triesTimestamps[0] >= 100,
+    delayStub.calledWith(100),
     'should wait 100ms'
   )
 
@@ -211,30 +204,20 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const triesTimestamps = []
   const lstatStub = stub()
-    .onCall(0).throws((path) => {
-      triesTimestamps.push(Date.now())
-
-      return { path, code: 'EBUSY' }
-    })
-    .onCall(1).throws((path) => {
-      triesTimestamps.push(Date.now())
-
-      return { path, code: 'EBUSY' }
-    })
-    .onCall(2).callsFake((path, callback) => {
-      triesTimestamps.push(Date.now())
-
-      fs.lstat(path, callback)
-    })
-
+    .onCall(0).throws((path) => ({ path, code: 'EBUSY' }))
+    .onCall(1).throws((path) => ({ path, code: 'EBUSY' }))
+    .onCall(2).callsFake(fs.lstat)
+  const delayStub = stub().resolves()
   let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
       lstat: lstatStub
+    },
+    delay: {
+      default: delayStub
     }
   })
 
@@ -252,7 +235,7 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
   )
 
   t.true(
-    triesTimestamps[1] - triesTimestamps[0] >= 100,
+    delayStub.getCall(0).calledWith(100),
     'should wait 100ms'
   )
 
@@ -262,7 +245,7 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
   )
 
   t.true(
-    triesTimestamps[2] - triesTimestamps[1] >= 100,
+    delayStub.getCall(1).calledWith(100),
     'should wait 100ms'
   )
 
@@ -292,7 +275,6 @@ test('error: EBUSY + win32 + 3 retries', async (t) => {
   })
   const fs = createFsFromVolume(vol)
   const lstatStub = stub().throws((path) => ({ path, code: 'EBUSY' }))
-
   let hasFixedMode = false
 
   mock('../src/', {
