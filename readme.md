@@ -25,14 +25,6 @@ $ yarn add dleet
 
 ## Usage
 
-### Signature
-
-```ts
-const dleet = (path: string) => Promise<void>
-```
-
-### Example
-
 ```js
 import dleet from 'dleet'
 
