@@ -1,8 +1,18 @@
 import test from 'tape-promise/tape'
 import { createFsFromVolume, Volume } from 'memfs'
 import { mock, unmock } from 'mocku'
-import { stub } from 'sinon'
+import { createSpy, getSpyCalls } from 'spyfn'
 import makethen from 'makethen'
+
+class CustomError extends Error {
+  constructor (props) {
+    super(props.message)
+
+    Object.keys(props).forEach((key) => {
+      this[key] = props[key]
+    })
+  }
+}
 
 test('delete directory with subdirectories, files and symlinks', async (t) => {
   const vol = Volume.fromJSON({
@@ -81,83 +91,29 @@ test('error: ENOENT + not win32', async (t) => {
   vol.reset()
 })
 
-test('error: EPERM + win32 + fix + fixed', async (t) => {
-  const originalPlatform = process.platform
-  const vol = Volume.fromJSON({
-    '/test/1.md': ''
-  })
-  const fs = createFsFromVolume(vol)
-  const lstatStub = stub()
-    .onCall(0).throws((path) => ({ path, code: 'EPERM' }))
-    .onCall(1).callsFake(fs.lstat)
-  const chmodStub = stub().callsArgWith(2, null)
-
-  let hasFixedMode = false
-
-  mock('../src/', {
-    fs: {
-      ...fs,
-      chmod: chmodStub,
-      lstat: lstatStub
-    }
-  })
-
-  Object.defineProperty(process, 'platform', {
-    value: 'win32'
-  })
-
-  const { default: dleet } = await import('../src/')
-
-  await dleet('/test/1.md')
-
-  t.true(
-    lstatStub.getCall(0).calledWithMatch('/test/1.md'),
-    'should try 1st time'
-  )
-
-  t.true(
-    chmodStub.calledWithMatch('/test/1.md', 438),
-    'should apply chmod with value'
-  )
-
-  t.true(
-    lstatStub.getCall(1).calledWithMatch('/test/1.md'),
-    'should try 2nd time'
-  )
-
-  t.deepEqual(
-    vol.toJSON(),
-    { '/test': null },
-    'should delete a file'
-  )
-
-  Object.defineProperty(process, 'platform', {
-    value: originalPlatform
-  })
-
-  unmock('../src/')
-  vol.reset()
-})
-
 test('error: EBUSY + win32 + 1 retry', async (t) => {
   const originalPlatform = process.platform
   const vol = Volume.fromJSON({
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub()
-    .onCall(0).throws((path) => ({ path, code: 'EBUSY' }))
-    .onCall(1).callsFake(fs.lstat)
-  const delayStub = stub().resolves()
+  const lstatSpy = createSpy(({ index, args }) => {
+    if (index === 0) {
+      throw new CustomError({ code: 'EBUSY' })
+    }
+
+    return fs.lstat(...args)
+  })
+  const delaySpy = createSpy(() => Promise.resolve())
   let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     },
     delay: {
-      default: delayStub
+      default: delaySpy
     }
   })
 
@@ -169,19 +125,16 @@ test('error: EBUSY + win32 + 1 retry', async (t) => {
 
   await dleet('/test/1.md')
 
-  t.true(
-    lstatStub.getCall(0).calledWithMatch('/test/1.md'),
-    'should try 1st time'
+  t.deepEqual(
+    getSpyCalls(lstatSpy).map((call) => [call[0]]),
+    [['/test/1.md'], ['/test/1.md']],
+    'should try 2 times'
   )
 
-  t.true(
-    delayStub.calledWith(100),
+  t.deepEqual(
+    getSpyCalls(delaySpy),
+    [[100]],
     'should wait 100ms'
-  )
-
-  t.true(
-    lstatStub.getCall(1).calledWithMatch('/test/1.md'),
-    'should try 2nd time'
   )
 
   t.deepEqual(
@@ -204,20 +157,23 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub()
-    .onCall(0).throws((path) => ({ path, code: 'EBUSY' }))
-    .onCall(1).throws((path) => ({ path, code: 'EBUSY' }))
-    .onCall(2).callsFake(fs.lstat)
-  const delayStub = stub().resolves()
+  const lstatSpy = createSpy(({ index, args }) => {
+    if (index < 2) {
+      throw new CustomError({ code: 'EBUSY' })
+    }
+
+    return fs.lstat(...args)
+  })
+  const delaySpy = createSpy(() => Promise.resolve())
   let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     },
     delay: {
-      default: delayStub
+      default: delaySpy
     }
   })
 
@@ -229,29 +185,16 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
 
   await dleet('/test/1.md')
 
-  t.true(
-    lstatStub.getCall(0).calledWithMatch('/test/1.md'),
-    'should try 1st time'
+  t.deepEqual(
+    getSpyCalls(lstatSpy).map((call) => [call[0]]),
+    [['/test/1.md'], ['/test/1.md'], ['/test/1.md']],
+    'should try 3 times'
   )
 
-  t.true(
-    delayStub.getCall(0).calledWith(100),
-    'should wait 100ms'
-  )
-
-  t.true(
-    lstatStub.getCall(1).calledWithMatch('/test/1.md'),
-    'should try 2nd time'
-  )
-
-  t.true(
-    delayStub.getCall(1).calledWith(100),
-    'should wait 100ms'
-  )
-
-  t.true(
-    lstatStub.getCall(2).calledWithMatch('/test/1.md'),
-    'should try 3rd time'
+  t.deepEqual(
+    getSpyCalls(delaySpy),
+    [[100], [100]],
+    'should wait for 100ms 2 times'
   )
 
   t.deepEqual(
@@ -274,13 +217,15 @@ test('error: EBUSY + win32 + 3 retries', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub().throws((path) => ({ path, code: 'EBUSY' }))
+  const lstatSpy = createSpy(() => {
+    throw new CustomError({ code: 'EBUSY' })
+  })
   let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     }
   })
 
@@ -293,9 +238,9 @@ test('error: EBUSY + win32 + 3 retries', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.equal(
-      lstatStub.callCount,
-      3,
+    t.deepEqual(
+      getSpyCalls(lstatSpy).map((call) => [call[0]]),
+      [['/test/1.md'], ['/test/1.md'], ['/test/1.md']],
       'should try 3 times'
     )
 
@@ -319,12 +264,14 @@ test('error: EBUSY + not win32', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub().throws((path) => ({ path, code: 'EBUSY' }))
+  const lstatSpy = createSpy(() => {
+    throw new CustomError({ code: 'EBUSY' })
+  })
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     }
   })
 
@@ -333,8 +280,9 @@ test('error: EBUSY + not win32', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.true(
-      lstatStub.calledOnce,
+    t.deepEqual(
+      getSpyCalls(lstatSpy).map((call) => [call[0]]),
+      [['/test/1.md']],
       'should try once'
     )
 
@@ -349,18 +297,83 @@ test('error: EBUSY + not win32', async (t) => {
   vol.reset()
 })
 
+test('error: EPERM + win32 + fix + fixed', async (t) => {
+  const originalPlatform = process.platform
+  const vol = Volume.fromJSON({
+    '/test/1.md': ''
+  })
+  const fs = createFsFromVolume(vol)
+  const lstatSpy = createSpy(({ index, args }) => {
+    if (index === 0) {
+      throw new CustomError({ code: 'EPERM' })
+    }
+
+    return fs.lstat(...args)
+  })
+  const chmodSpy = createSpy(({ args }) => {
+    args[2](null)
+  })
+
+  let hasFixedMode = false
+
+  mock('../src/', {
+    fs: {
+      ...fs,
+      chmod: chmodSpy,
+      lstat: lstatSpy
+    }
+  })
+
+  Object.defineProperty(process, 'platform', {
+    value: 'win32'
+  })
+
+  const { default: dleet } = await import('../src/')
+
+  await dleet('/test/1.md')
+
+  const calls = getSpyCalls(lstatSpy)
+
+  t.deepEqual(
+    getSpyCalls(lstatSpy).map((call) => [call[0]]),
+    [['/test/1.md'], ['/test/1.md']],
+    'should try 2 times'
+  )
+
+  t.deepEqual(
+    getSpyCalls(chmodSpy).map((call) => [call[0], call[1]]),
+    [['/test/1.md', 438]],
+    'should apply chmod with value'
+  )
+
+  t.deepEqual(
+    vol.toJSON(),
+    { '/test': null },
+    'should delete a file'
+  )
+
+  Object.defineProperty(process, 'platform', {
+    value: originalPlatform
+  })
+
+  unmock('../src/')
+  vol.reset()
+})
+
 test('error: EPERM + win32 + fix + not fixed', async (t) => {
   const originalPlatform = process.platform
   const vol = Volume.fromJSON({
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub().throws((path) => ({ path, code: 'EPERM' }))
+  const lstatSpy = createSpy(() => {
+    throw new CustomError({ code: 'EPERM' })
+  })
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     }
   })
 
@@ -373,8 +386,9 @@ test('error: EPERM + win32 + fix + not fixed', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.true(
-      lstatStub.calledTwice,
+    t.deepEqual(
+      getSpyCalls(lstatSpy).map((call) => [call[0]]),
+      [['/test/1.md'], ['/test/1.md']],
       'should try 2 times'
     )
 
@@ -398,12 +412,14 @@ test('error: EPERM + not win32', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub().throws((path) => ({ path, code: 'EPERM' }))
+  const lstatSpy = createSpy(() => {
+    throw new CustomError({ code: 'EPERM' })
+  })
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     }
   })
 
@@ -412,8 +428,9 @@ test('error: EPERM + not win32', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.true(
-      lstatStub.calledOnce,
+    t.deepEqual(
+      getSpyCalls(lstatSpy).map((call) => [call[0]]),
+      [['/test/1.md']],
       'should try once'
     )
 
@@ -434,12 +451,14 @@ test('error: any other + win32', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub().throws((path) => ({ path, code: 'OOPSIE' }))
+  const lstatSpy = createSpy(() => {
+    throw new CustomError({ code: 'OOPSIE' })
+  })
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     }
   })
 
@@ -448,8 +467,9 @@ test('error: any other + win32', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.true(
-      lstatStub.calledOnce,
+    t.deepEqual(
+      getSpyCalls(lstatSpy).map((call) => [call[0]]),
+      [['/test/1.md']],
       'should try once'
     )
 
@@ -470,12 +490,14 @@ test('error: any other + not win32', async (t) => {
     '/test/1.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const lstatStub = stub().throws((path) => ({ path, code: 'OOPSIE' }))
+  const lstatSpy = createSpy(() => {
+    throw new CustomError({ code: 'OOPSIE' })
+  })
 
   mock('../src/', {
     fs: {
       ...fs,
-      lstat: lstatStub
+      lstat: lstatSpy
     }
   })
 
@@ -488,8 +510,9 @@ test('error: any other + not win32', async (t) => {
   try {
     await dleet('/test/1.md')
   } catch (error) {
-    t.true(
-      lstatStub.calledOnce,
+    t.deepEqual(
+      getSpyCalls(lstatSpy).map((call) => [call[0]]),
+      [['/test/1.md']],
       'should try once'
     )
 

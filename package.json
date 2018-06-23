@@ -27,7 +27,7 @@
     "@types/tape": "^4.2.32",
     "memfs": "^2.9.0",
     "mocku": "^0.2.0",
-    "sinon": "^6.0.0",
+    "spyfn": "^0.1.1",
     "tape-promise": "^3.0.0",
     "typescript": "^2.9.1"
   },
