@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@deepsweet/eslint-config-node-ts": "^0.1.0",
-    "@deepsweet/start-preset-node-ts-lib": "^0.1.0-5",
+    "@deepsweet/start-preset-node-ts-lib": "^0.2.0",
     "@types/node": "^10.3.1",
     "@types/tape": "^4.2.32",
     "memfs": "^2.9.0",

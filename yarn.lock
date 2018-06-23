@@ -572,9 +572,9 @@
     eslint-plugin-standard "^3.0.1"
     typescript-eslint-parser "^16.0.0"
 
-"@deepsweet/start-preset-node-ts-lib@^0.1.0-5":
-  version "0.1.0-5"
-  resolved "https://registry.yarnpkg.com/@deepsweet/start-preset-node-ts-lib/-/start-preset-node-ts-lib-0.1.0-5.tgz#2f8f7c5386fbf9d3bc162a442e0e9eaafe86f2ec"
+"@deepsweet/start-preset-node-ts-lib@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@deepsweet/start-preset-node-ts-lib/-/start-preset-node-ts-lib-0.2.0.tgz#ea4c6f5e840c6d2df1182fd8a92e0282815cee3b"
   dependencies:
     "@babel/core" "^7.0.0-0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0-0"
@@ -582,26 +582,26 @@
     "@babel/preset-env" "^7.0.0-0"
     "@babel/preset-typescript" "^7.0.0-0"
     "@babel/register" "^7.0.0-0"
-    "@start/plugin-find" "^0.1.0"
-    "@start/plugin-lib-babel" "^0.1.1"
-    "@start/plugin-lib-codecov" "^0.1.0"
-    "@start/plugin-lib-eslint" "^0.1.1"
-    "@start/plugin-lib-istanbul" "^0.1.1"
-    "@start/plugin-lib-npm-publish" "^0.1.0"
-    "@start/plugin-lib-npm-version" "^0.1.0"
-    "@start/plugin-lib-tape" "^0.1.1"
-    "@start/plugin-lib-typescript-check" "^0.1.1"
-    "@start/plugin-lib-typescript-generate" "^0.1.1"
-    "@start/plugin-overwrite" "^0.1.1"
-    "@start/plugin-parallel" "^0.1.0"
-    "@start/plugin-read" "^0.1.1"
-    "@start/plugin-remove" "^0.1.0"
-    "@start/plugin-rename" "^0.1.1"
-    "@start/plugin-sequence" "^0.1.0"
-    "@start/plugin-watch" "^0.1.1"
-    "@start/plugin-write" "^0.1.3"
+    "@start/plugin-find" "^0.2.0"
+    "@start/plugin-lib-babel" "^0.2.0"
+    "@start/plugin-lib-codecov" "^0.2.0"
+    "@start/plugin-lib-eslint" "^0.2.0"
+    "@start/plugin-lib-istanbul" "^0.2.0"
+    "@start/plugin-lib-npm-publish" "^0.2.0"
+    "@start/plugin-lib-npm-version" "^0.2.0"
+    "@start/plugin-lib-tape" "^0.2.0"
+    "@start/plugin-lib-typescript-check" "^0.2.0"
+    "@start/plugin-lib-typescript-generate" "^0.2.0"
+    "@start/plugin-overwrite" "^0.2.0"
+    "@start/plugin-parallel" "^0.2.0"
+    "@start/plugin-read" "^0.2.0"
+    "@start/plugin-remove" "^0.2.0"
+    "@start/plugin-rename" "^0.2.0"
+    "@start/plugin-sequence" "^0.2.0"
+    "@start/plugin-watch" "^0.2.0"
+    "@start/plugin-write" "^0.2.0"
     "@start/reporter-verbose" "^0.1.0"
-    esm "^3.0.48"
+    esm "^3.0.52"
     tap-diff "^0.1.1"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
@@ -615,44 +615,44 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
 
-"@start/plugin-find@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-find/-/plugin-find-0.1.0.tgz#6e795a37e40112195486021aa5ae66dd6906db95"
+"@start/plugin-find@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-find/-/plugin-find-0.2.0.tgz#281792bd38a733ebd03bf725ff296f527e4ff060"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     globby "^8.0.1"
 
-"@start/plugin-lib-babel@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-babel/-/plugin-lib-babel-0.1.1.tgz#b9bb663e33beff5b497fd5f975f3567e23109299"
+"@start/plugin-lib-babel@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-babel/-/plugin-lib-babel-0.2.0.tgz#fdb6da08c651977c4bef8e23b1330cff967ec3b6"
   dependencies:
     "@babel/core" "^7.0.0-beta.49"
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
 
-"@start/plugin-lib-codecov@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-codecov/-/plugin-lib-codecov-0.1.0.tgz#2834f5262acc58be6c1816bcdbad765812432908"
+"@start/plugin-lib-codecov@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-codecov/-/plugin-lib-codecov-0.2.0.tgz#2b00b7bf3637ddbba2df2c8524b6781589942e72"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     codecov-lite "^0.1.3"
 
-"@start/plugin-lib-eslint@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-eslint/-/plugin-lib-eslint-0.1.1.tgz#4484bdc2d405be908056a6788db0480863b7cd67"
+"@start/plugin-lib-eslint@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-eslint/-/plugin-lib-eslint-0.2.0.tgz#c71c21f84206855e8b6dff2c39229e164dbb608b"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     eslint "^4.18.2"
 
-"@start/plugin-lib-istanbul@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-istanbul/-/plugin-lib-istanbul-0.1.1.tgz#21e9e0f74e96364d2c58794fdf4242edd6c3d99d"
+"@start/plugin-lib-istanbul@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-istanbul/-/plugin-lib-istanbul-0.2.0.tgz#5b00b7828c2215203eb5dae44ab4ca328d6fa48e"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     convert-source-map "^1.5.1"
     istanbul-api "^1.3.1"
     istanbul-lib-coverage "^1.2.0"
@@ -661,119 +661,118 @@
     istanbul-lib-report "^1.1.4"
     istanbul-lib-source-maps "^1.2.3"
 
-"@start/plugin-lib-npm-publish@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-npm-publish/-/plugin-lib-npm-publish-0.1.0.tgz#8bf65e3918062bf4fc8efe2b15b78ed8e54d561d"
+"@start/plugin-lib-npm-publish@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-npm-publish/-/plugin-lib-npm-publish-0.2.0.tgz#0f0aae03c056ca541ef0fef0a9462f2b8a537a35"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     execa "^0.10.0"
 
-"@start/plugin-lib-npm-version@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-npm-version/-/plugin-lib-npm-version-0.1.0.tgz#cbf3e65541116d78e618a01993be0ad0d8ac267c"
+"@start/plugin-lib-npm-version@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-npm-version/-/plugin-lib-npm-version-0.2.0.tgz#823f643273bd8b01d35d6235836bb198eff97e7f"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     execa "^0.10.0"
 
-"@start/plugin-lib-tape@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-tape/-/plugin-lib-tape-0.1.1.tgz#4eb85f89b598c91765122c0cb4eb180512176c47"
+"@start/plugin-lib-tape@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-tape/-/plugin-lib-tape-0.2.0.tgz#19ed671d936f91ca70953a7c48ee3a28cb90abf2"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     tape "^4.9.0"
     through "^2.3.8"
 
-"@start/plugin-lib-typescript-check@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-typescript-check/-/plugin-lib-typescript-check-0.1.1.tgz#48e4d47b8ab17027ced6f1214f3efc09b27c66db"
+"@start/plugin-lib-typescript-check@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-typescript-check/-/plugin-lib-typescript-check-0.2.0.tgz#74a972cca27cc809fc39e8a8a5d59ee7dee1f88e"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     execa "^0.10.0"
 
-"@start/plugin-lib-typescript-generate@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-lib-typescript-generate/-/plugin-lib-typescript-generate-0.1.1.tgz#4edb43149c31c3c04bd0115fec85a4ad70aec047"
+"@start/plugin-lib-typescript-generate@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-lib-typescript-generate/-/plugin-lib-typescript-generate-0.2.0.tgz#e8cc8635eb4cf525804ceecca447e551b00abd44"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     execa "^0.10.0"
 
-"@start/plugin-overwrite@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-overwrite/-/plugin-overwrite-0.1.1.tgz#bed6ea1ef706a757f06ec434f067fc076a0bd1e6"
+"@start/plugin-overwrite@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-overwrite/-/plugin-overwrite-0.2.0.tgz#8d7b01a3fde4abb7f25878c1868f726a1000aace"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     graceful-fs "^4.1.11"
     makethen "^0.2.2"
 
-"@start/plugin-parallel@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-parallel/-/plugin-parallel-0.1.0.tgz#6cff7984261a804001899756663c500335698963"
+"@start/plugin-parallel@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-parallel/-/plugin-parallel-0.2.0.tgz#4ea1066601ac4036ad1e4b04b274c9f140bddb0e"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     execa "^0.10.0"
     p-all "^1.0.0"
 
-"@start/plugin-read@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-read/-/plugin-read-0.1.1.tgz#76cd17b86200a9ffa319649912887a5c3c1ee527"
+"@start/plugin-read@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-read/-/plugin-read-0.2.0.tgz#5862ed091468e8c836cd9b24b000e87dbc698e63"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     graceful-fs "^4.1.11"
     makethen "^0.2.2"
 
-"@start/plugin-remove@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-remove/-/plugin-remove-0.1.0.tgz#b3592f0a90bdb4469e891a77507755eba1234efa"
+"@start/plugin-remove@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@start/plugin-remove/-/plugin-remove-0.2.1.tgz#f19a7571d598ddcb8fe948506e4b7586ee2f28b0"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
-    makethen "^0.2.2"
-    rimraf "^2.6.2"
+    "@start/plugin" "^0.2.0"
+    dleet "^0.1.1"
 
-"@start/plugin-rename@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-rename/-/plugin-rename-0.1.1.tgz#815bf310f6864d1ccfe6c872d83d01127e7af49d"
+"@start/plugin-rename@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-rename/-/plugin-rename-0.2.0.tgz#f6dd37a4a441ecbc637d55e5566d06592acb58c1"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
 
-"@start/plugin-sequence@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin-sequence/-/plugin-sequence-0.1.0.tgz#459eb3a853d99b7355f6d07b00026dd131035b7f"
+"@start/plugin-sequence@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-sequence/-/plugin-sequence-0.2.0.tgz#2b605e0565fb130262811a3d1182dd8d0f1a7b21"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
 
-"@start/plugin-watch@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@start/plugin-watch/-/plugin-watch-0.1.1.tgz#f2cc1c7e933273d6c8fdbd02ff6901003eee09f3"
+"@start/plugin-watch@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-watch/-/plugin-watch-0.2.0.tgz#c135184c75ef062b20bbab43017c71275c290a8d"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     chokidar "^2.0.2"
 
-"@start/plugin-write@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@start/plugin-write/-/plugin-write-0.1.3.tgz#2390dcb33531e400cdd167d9ae6c470e760e50e1"
+"@start/plugin-write@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin-write/-/plugin-write-0.2.0.tgz#fcf9a8374166e1f8d3fdee1b4aa7a7627a388c84"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
-    "@start/plugin" "^0.1.0-0"
+    "@start/plugin" "^0.2.0"
     graceful-fs "^4.1.11"
     make-dir "^1.3.0"
     makethen "^0.2.2"
     move-path "^0.1.0"
 
-"@start/plugin@^0.1.0-0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@start/plugin/-/plugin-0.1.0.tgz#6ca1a8a64c93a00903747528976f3acd0d5a7fd1"
+"@start/plugin@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@start/plugin/-/plugin-0.2.0.tgz#cff1d457506bf2d305d93a2a6d00a46cd9493f4b"
   dependencies:
     "@babel/runtime" "^7.0.0-0"
 
@@ -1481,6 +1480,14 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
+dleet@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/dleet/-/dleet-0.1.1.tgz#56d21e142b594a56e36dfc3e7ac9c596e9d6ec29"
+  dependencies:
+    "@babel/runtime" "^7.0.0-0"
+    delay "^3.0.0"
+    makethen "^0.2.2"
+
 doctrine@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
@@ -1640,9 +1647,9 @@ eslint@^4.18.2, eslint@^4.19.1:
     table "4.0.2"
     text-table "~0.2.0"
 
-esm@^3.0.48:
-  version "3.0.48"
-  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.48.tgz#24bf3834428b44cac7d953bb5b196d2e4ec0d815"
+esm@^3.0.52:
+  version "3.0.53"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.53.tgz#dcab296db0531cf10d611dc783ba31c73fb58b59"
 
 espree@^3.5.4:
   version "3.5.4"
@@ -3392,7 +3399,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@^2.2.8, rimraf@^2.6.1, rimraf@^2.6.2:
+rimraf@^2.2.8, rimraf@^2.6.1:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
