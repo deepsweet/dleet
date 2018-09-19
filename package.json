@@ -1,6 +1,6 @@
 {
   "name": "dleet",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Delete directories and files",
   "keywords": "remove, delete, rmrf",
   "homepage": "https://github.com/deepsweet/dleet",
