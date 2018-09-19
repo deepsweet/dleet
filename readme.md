@@ -20,6 +20,8 @@ Delete directories and files. Yet another one of many similar to `rm -rf` packag
 
 ```sh
 $ yarn add dleet
+# or
+$ npm install dleet
 ```
 
 ## Usage
