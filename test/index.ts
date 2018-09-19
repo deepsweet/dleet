@@ -1,11 +1,13 @@
-import test from 'tape-promise/tape'
+import { promisify } from 'util'
+import test from 'blue-tape'
 import { createFsFromVolume, Volume } from 'memfs'
 import { mock, unmock } from 'mocku'
 import { createSpy, getSpyCalls } from 'spyfn'
-import makethen from 'makethen'
 
 class CustomError extends Error {
-  constructor (props) {
+  [key: string]: any
+
+  constructor (props: { [key: string]: any }) {
     super(props.message)
 
     Object.keys(props).forEach((key) => {
@@ -21,8 +23,7 @@ test('delete directory with subdirectories, files and symlinks', async (t) => {
     '/test/foo/bar/3.md': ''
   })
   const fs = createFsFromVolume(vol)
-  type Symlink = (target: string, path: string, cb: (error: any) => void) => void
-  const symlink = makethen(fs.symlink as Symlink)
+  const symlink = promisify(fs.symlink)
 
   await symlink('/test/foo/2.md', '/test/symlink')
 
@@ -102,17 +103,16 @@ test('error: EBUSY + win32 + 1 retry', async (t) => {
       throw new CustomError({ code: 'EBUSY' })
     }
 
-    return fs.lstat(...args)
+    return fs.lstat(args[0], args[1])
   })
   const delaySpy = createSpy(() => Promise.resolve())
-  let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
       lstat: lstatSpy
     },
-    delay: {
+    './delay': {
       default: delaySpy
     }
   })
@@ -162,17 +162,16 @@ test('error: EBUSY + win32 + 2 retries', async (t) => {
       throw new CustomError({ code: 'EBUSY' })
     }
 
-    return fs.lstat(...args)
+    return fs.lstat(args[0], args[1])
   })
   const delaySpy = createSpy(() => Promise.resolve())
-  let hasFixedMode = false
 
   mock('../src/', {
     fs: {
       ...fs,
       lstat: lstatSpy
     },
-    delay: {
+    './delay': {
       default: delaySpy
     }
   })
@@ -220,7 +219,6 @@ test('error: EBUSY + win32 + 3 retries', async (t) => {
   const lstatSpy = createSpy(() => {
     throw new CustomError({ code: 'EBUSY' })
   })
-  let hasFixedMode = false
 
   mock('../src/', {
     fs: {
@@ -308,13 +306,11 @@ test('error: EPERM + win32 + fix + fixed', async (t) => {
       throw new CustomError({ code: 'EPERM' })
     }
 
-    return fs.lstat(...args)
+    return fs.lstat(args[0], args[1])
   })
   const chmodSpy = createSpy(({ args }) => {
     args[2](null)
   })
-
-  let hasFixedMode = false
 
   mock('../src/', {
     fs: {
@@ -331,8 +327,6 @@ test('error: EPERM + win32 + fix + fixed', async (t) => {
   const { default: dleet } = await import('../src/')
 
   await dleet('/test/1.md')
-
-  const calls = getSpyCalls(lstatSpy)
 
   t.deepEqual(
     getSpyCalls(lstatSpy).map((call) => [call[0]]),
@@ -445,8 +439,7 @@ test('error: EPERM + not win32', async (t) => {
   vol.reset()
 })
 
-test('error: any other + win32', async (t) => {
-  const originalPlatform = process.platform
+test('error: any other + not win32', async (t) => {
   const vol = Volume.fromJSON({
     '/test/1.md': ''
   })
@@ -484,7 +477,7 @@ test('error: any other + win32', async (t) => {
   vol.reset()
 })
 
-test('error: any other + not win32', async (t) => {
+test('error: any other + win32', async (t) => {
   const originalPlatform = process.platform
   const vol = Volume.fromJSON({
     '/test/1.md': ''

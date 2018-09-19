@@ -1,20 +1,20 @@
 import { chmod, lstat, readdir, rmdir, unlink } from 'fs'
+import { promisify } from 'util'
 import { join } from 'path'
-import makethen from 'makethen'
-import delay from 'delay'
+import delay from './delay'
 
 const EBUSY_MAX_TRIES = 3
 const EBUSY_RETRY_DELAY = 100
 const CHMOD_RWRWRW = parseInt('666', 8)
 const IS_WINDOWS = process.platform === 'win32'
 
-const pChmod = makethen(chmod)
-const pLstat = makethen(lstat)
-const pReaddir = makethen(readdir)
-const pRmdir = makethen(rmdir)
-const pUnlink = makethen(unlink)
+const pChmod = promisify(chmod)
+const pLstat = promisify(lstat)
+const pReaddir = promisify(readdir)
+const pRmdir = promisify(rmdir)
+const pUnlink = promisify(unlink)
 
-const rm = async (targetPath: string) => {
+const rm = async (targetPath: string): Promise<void> => {
   const stats = await pLstat(targetPath)
 
   if (stats.isDirectory()) {

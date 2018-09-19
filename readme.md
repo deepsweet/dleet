@@ -14,8 +14,7 @@ Delete directories and files. Yet another one of many similar to `rm -rf` packag
 
 ## Requirements
 
-* Node.js >= 6
-* [`esm` loader](https://github.com/standard-things/esm)
+* Node.js >= 8.6.0
 
 ## Install
 
