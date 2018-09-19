@@ -1,4 +1,3 @@
-import { promisify } from 'util'
 import test from 'blue-tape'
 import { createFsFromVolume, Volume } from 'memfs'
 import { mock, unmock } from 'mocku'
@@ -23,9 +22,8 @@ test('delete directory with subdirectories, files and symlinks', async (t) => {
     '/test/foo/bar/3.md': ''
   })
   const fs = createFsFromVolume(vol)
-  const symlink = promisify(fs.symlink)
 
-  await symlink('/test/foo/2.md', '/test/symlink')
+  fs.symlinkSync('/test/foo/2.md', '/test/symlink')
 
   mock('../src/', { fs })
 
