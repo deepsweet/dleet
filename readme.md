@@ -7,7 +7,6 @@ Delete directories and files. Yet another one of many similar to `rm -rf` packag
 * no CLI
 * no globs
 * Promise only API
-* ESM
 * Windows errors handling:
   * an attempt to fix `EPERM` and retry
   * an attempt to wait and retry few times on `EBUSY`
