@@ -1,6 +1,6 @@
 # dleet
 
-[![npm](https://img.shields.io/npm/v/dleet.svg?style=flat-square)](https://www.npmjs.com/package/dleet) [![tests](https://img.shields.io/travis/deepsweet/dleet/master.svg?label=tests&style=flat-square)](https://travis-ci.org/deepsweet/dleet) [![coverage](https://img.shields.io/codecov/c/github/deepsweet/dleet.svg?style=flat-square)](https://codecov.io/github/deepsweet/dleet)
+[![npm](https://img.shields.io/npm/v/dleet.svg?style=flat-square)](https://www.npmjs.com/package/dleet) [![tests](https://img.shields.io/travis/deepsweet/dleet/master.svg?label=tests&style=flat-square)](https://travis-ci.org/deepsweet/dleet) [![coverage](https://img.shields.io/codecov/c/github/deepsweet/dleet.svg?style=flat-square)](https://codecov.io/github/deepsweet/dleet) [![Greenkeeper badge](https://badges.greenkeeper.io/deepsweet/dleet.svg)](https://greenkeeper.io/)
 
 Delete directories and files. Yet another one of many similar to `rm -rf` packages. However:
 
